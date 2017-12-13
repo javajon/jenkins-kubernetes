@@ -1,0 +1,6 @@
+# Ensure only the absolutly necessary files are in source control.
+
+extra/
+
+#Ignore MAC system files
+.DS_Store
