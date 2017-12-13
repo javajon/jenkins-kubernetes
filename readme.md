@@ -1,6 +1,7 @@
 # Jenkins on Kubernetes #
 
 - Cattle, not pets
+- Jenkins plugin for leveraging Kubernetes power - builds on pods.
 - Leverage scaling
 - Leverage monitoring
 - Inspiration from Chris Ricci
@@ -29,7 +30,6 @@
 kubectl create ns production && kubectl create ns monitoring-demo
 `
 
------------------------
 ## Installing Helm ##
 
 Download the command line tool from here then run
@@ -42,7 +42,6 @@ helm repo update
 to ensure the Tiller portion of Helm is install onto the cluster. This will take a minute before 
 Tiller is available.
 
-----------------------
 ## Setup Monitoring ##
 
 Change to the monitoring directory
@@ -62,7 +61,6 @@ Get the load balancer endpoint for Prometheus:
 minikube service -n monitoring-demo prometheus-hello-world
 `
 
--------------------------
 ## Setup Alert Manager ##
 
 Change to alerting
@@ -93,7 +91,6 @@ Create Alert Manager latency rule
 kubectl create -n monitoring-demo -f alertmanager-latency-rule.yaml
 `
 
---------------------------
 ## Installing Jenkins ##
 
 A growing list of public stable charts are available and can be seen with this listing command:
@@ -131,21 +128,18 @@ defined in the jenkins-values.yaml file.
 Also in the jenkins-values.yaml file is a list of defined plugins. Through the UI verify those plugins
 are present.
 
-------------------------
 ## Create a Quay Repo ##
 
 Create a repo in Quay called "hello-world-instrumented" and assign a robot
 account to the repo with write access. Next, copy the token to a file called 
 quay-robot-token.txt and place it in your home directory.
 
------------------------
 ## Configure Jenkins ##
 
 Change docker image to: radumatei/jenkins-slave-docker:kubectl
 Add a Container Environment variable: quay_username: jonathan_johnson+robot
 Add a Container Environment variable: quay_password: (credentials from robot account)
 
-----------------------------------------
 ## Connection to Deployed Application ##
 
 minikube service list will show a service that exposes two URLs as NodePorts.
@@ -158,4 +152,6 @@ With curl hit the first port a few times to get the Hello World response. Then c
 to get the metrics report. This is the same metrics url that Prometheus will scrape.
 
 
-
+## Acknowledgments ##
+A special thank you the inspiration and skeleton for this tutorial from [Chris Ricci](https://github.com/cricci82) at CoreOS.
+Inspiration also from [Lachlan Evenson](https://github.com/lachie83/croc-hunter) with an helpful and [instructional video](https://youtu.be/eMOzF_xAm7w
