@@ -144,6 +144,19 @@ Add a container environment variable: quay_password: 494WVD9UVCG5CSVXP8CFTA2KLZK
 
 The token secret is generated from the robot account on quay.io
 
+## Create Jenkins Pipeline for Hello-World-Instrumented project ##
+
+
+Create Pipeline
+
+Poll * * * * *
+Add Git https://github.com/javajon/hello-world-instrumented
+
+Click 'Build Now'
+View build console output and notice its waiting for container agent
+Agent appears in Jenkins main
+Go to Minikube dashboard and observe Jenkins agent container spinning up
+
 ## Connection to Deployed Application ##
 
 minikube service list will show a service that exposes two URLs as NodePorts.
