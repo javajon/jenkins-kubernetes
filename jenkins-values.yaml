@@ -1,32 +1,36 @@
 # Includes complete Jenkins configuration in order to run Jenkins on Kubernetes
 # To install run:
-# helm --namespace jenkins --name jenkins -f ./jenkins-values.yaml install stable/jenkins
+# helm install stable/jenkins --namespace jenkins --name jenkins -f ./jenkins-values.yam
 
 Master:
-  ImageTag: "2.111"
-  AdminPassword: admin
+  Image: "jenkins/jenkins"
+  ImageTag: "2.115-alpine"
+  # No password for demonstration purposes
+  UseSecurity: false
   Memory: "512Mi"
   ServiceType: NodePort
 
 # List of plugins to be install during Jenkins master start
   InstallPlugins:
-      - kubernetes:1.3.3
-      - workflow-aggregator:2.5
-      - workflow-job:2.17
-      - credentials-binding:1.15
-      - git:3.8.0
-      - ghprb:1.40.0
-#      - blueocean:1.1.7
+    - kubernetes:1.5.1
+    - workflow-aggregator:2.5
+    - workflow-job:2.18
+    - git:3.8.0
 
 Agent:
   Enabled: true
+
+  # This container run the Jenkins Job. Instead of the default jenkinsci/jnlp-slave
+  # it is replaced with a Jenkins Slave with Docker client and kubectl CLI abilities.
+  Image: radumatei/jenkins-slave-docker
+  ImageTag: kubectl
   volumes:
-  - type: HostPath
-    hostPath: /var/run/docker.sock
-    mountPath: /var/run/docker.sock
-  - type: HostPath
-    hostPath: /root/.kube
-    mountPath: /root/.kube
+    - type: HostPath
+      hostPath: /var/run/docker.sock
+      mountPath: /var/run/docker.sock
+    - type: HostPath
+      hostPath: /root/.kube
+      mountPath: /root/.kube
 
 rbac:
   install: false
