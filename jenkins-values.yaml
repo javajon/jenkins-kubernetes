@@ -4,7 +4,7 @@
 
 Master:
   Image: "jenkins/jenkins"
-  ImageTag: "2.115-alpine"
+  ImageTag: "2.117-alpine"
   # No password for demonstration purposes
   UseSecurity: false
   Memory: "512Mi"
@@ -12,9 +12,9 @@ Master:
 
 # List of plugins to be install during Jenkins master start
   InstallPlugins:
-    - kubernetes:1.5.1
+    - kubernetes:1.5.2
     - workflow-aggregator:2.5
-    - workflow-job:2.18
+    - workflow-job:2.19
     - git:3.8.0
 
 Agent:
