@@ -56,7 +56,7 @@ to ensure the Tiller portion of Helm is install onto the cluster. This will take
 
 ## Setup Monitoring (Optional)
 
-For a canary deployment monitoring the performance and behavior of newly deployed containers is important to inspect before deciding to either promote the new version, or rolling it back. Containers can be monitored with Prometheus. There is a Helm chart that installs a Prometheus operator and some opinionated configurations on top of that, thanks to CoreOS (now RedHat). To install andconfigure te Prometheus stack run these two scripts
+For a canary deployment monitoring the performance and behavior of newly deployed containers is important to inspect before deciding to either promote the new version, or rolling it back. Containers can be monitored with Prometheus. There is a Helm chart that installs a Prometheus operator and some opinionated configurations on top of that, thanks to CoreOS (now RedHat). To install and configure the Prometheus stack run these two scripts
 
 ``` bash
 kubectl create -f https://raw.githubusercontent.com/javajon/monitoring-kubernetes/master/helm/minikube-tiller-rbac.yaml
@@ -174,6 +174,8 @@ The application is served on port 5000, via an exposed NodePort 0:
 ```
 SERVICE=http://$(minikube ip):$(kubectl get svc hello-world -n monitoring-demo -o jsonpath="{.spec.ports[?(@.name=='web')].nodePort}")
 curl $SERVICE
+or
+while true; do curl -s $SERVICE; done
 ```
 
 and the metrics are served on 8000, via an exposed NodePort 1:
@@ -216,15 +218,39 @@ kubectl get pods -n monitoring-demo
 Notice that behind the service are 3 instances of the service running, 2 production and 1 canary.
 
 ----------------
-## Testing stack
+### Technology stack ###
 
 This demonstration was performed with these tools. Newer versions may exist.
 
-Minikube 0.26.1
-Kubernetes 1.10.0
-Kubectl 1.10.0
-Helm 2.8.2
-See the jenkins-value.yaml file to for the Jenkins version and its plugins
+* VirtualBox 5.8
+* Minikube 0.25.2 (with Kubernetes 1.9.4)
+* Kubectl 1.10.0
+* Helm 2.8.2
+* Prometheus Operator
+* Kube-Prometheus (Alertmanager + Grafana)
+* Python
+* See jenkins-value.yaml file for Jenkins version and its plugins
+
+### Presentation short instructions ###
+#### Pre-talk setup ####
+| Step                       | Command
+|----------------------------|---------
+| Fresh Minikube             | `minikube delete`
+| Initialize                 | `./start.sh`
+| CLI env                    | `. ./env.sh`
+| Init Helm                  | `cd helm && ./helm-init-rbac.sh`
+| Tiller start in ~15 min.   | `helm status`
+| Add RBAC access for Tiller | bash kubectl create -f https://raw.githubusercontent.com/javajon/monitoring-kubernetes/master/helm/minikube-tiller-rbac.yaml
+| Add service account for Helm | helm init --upgrade --service-account cluster-admin
+| Deploy monitoring stack      | curl https://raw.githubusercontent.com/javajon/monitoring-kubernetes/master/configurations/deploy-prometheus-stack.sh | bash -s
+|
+
+#### Demonstrate ####
+
+| Step                     | Command
+|--------------------------|---------
+| TODO                     |  TODO
+
 
 ## References
 [Canary deployments](
