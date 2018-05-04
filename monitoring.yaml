@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+spec:
+  serviceMonitorSelector:
+    matchLabels:
+      team: hello-world-team
+  resources:
+    requests:
+      memory: 400Mi
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: hello-world
+  labels:
+    team: hello-world-team
+spec:
+  selector:
+    matchLabels:
+      app: hello-world
+  endpoints:
+  - port: metrics
+  
