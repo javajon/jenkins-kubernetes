@@ -265,7 +265,7 @@ This demonstration was performed with these tools. Newer versions may exist.
 ### Acknowledgments ###
 
 - A special thanks to the inspiration for this tutorial from [Chris Ricci](https://github.com/cricci82) a solutions architect at RedHat (formerly CoreOS).
-- This demonstration is based on a helpful walkthrough from Chris Ricci, [*Implementing scalable CI/CD with Jenkins and Kubernetes*](https://resources.coreos.com/webinars/implementing-scalable-ci-cd-with-jenkins-and-kubernetes-3)
+- This demonstration is based on a helpful walkthrough from Chris Ricci, [*Implementing scalable CI/CD with Jenkins and Kubernetes*](https://youtu.be/tCuyl8dvd-k)
 
 ### Etcetera ###
 
